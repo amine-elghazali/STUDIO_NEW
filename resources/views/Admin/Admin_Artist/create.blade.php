@@ -1,3 +1,6 @@
+@extends('layouts.admin')
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +52,7 @@
 
                 <div class="form-group">
                     <label for="Bio">Artist Bio : </label>
-                        <input type="text" id="Bio" class="form-control" name="Bio" placeholder="Bio of the Artist">
+                        <textarea name="Bio" id="Bio" cols="90" rows="10"></textarea>
                 </div>
 
                 <div class="form-group">

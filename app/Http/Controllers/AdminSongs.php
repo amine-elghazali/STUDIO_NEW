@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Song;
+use App\Models\Artist;
+use App\Models\Album;
+
 
 class AdminSongs extends Controller
 {
@@ -15,9 +18,9 @@ class AdminSongs extends Controller
     public function index()
     {
         $Songs = Song::all();
-        dd($Songs);
+        //dd($Songs);
 
-        //return view('Admin.Admin_Song.index',['Songs' => $Songs]);
+        return view('Admin.Admin_Song.index',['songs' => $Songs]);
     }
 
     /**
@@ -27,7 +30,11 @@ class AdminSongs extends Controller
      */
     public function create()
     {
-        return view('Admin.Admin_Song.create');
+        return view('Admin.Admin_Song.create')
+                ->with([
+                    'Artists' => Artist::all(),
+                    'Albums' => Album::all()
+                ]);
     }
 
     /**
@@ -40,31 +47,68 @@ class AdminSongs extends Controller
     {
         $Songs = new Song();
 
+
+
         $request->validate([
             'id_Album ' => 'required',
             'id_Artist ' => 'required',
             'name' => 'required | string | max:255',
             'Bio' => 'required | string | max:255',
-            'fullName' => 'required | string | max:255',
-            'path' => 'required | string',
-            'extension' => 'required | string',
-            'size' => 'required | float',
+            //'songFile' => 'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,
+            //'file' => 'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,
+            //'fullName' => 'required | string | max:255',
+            //'path' => 'required | string',
+            //'extension' => 'required | string',
+            //'size' => 'required | float',
             'songDate' => 'required | Date',
         ]);
+        
+        //dd($request);
+        if( $request->hasFile('file')){
+            $Songs = Song::create([
+                'id_Album' => $request->input('id_Album'),
+                'id_Artist' => $request->input('id_Artist'),
+                'name' => $request->input('name'),
+                'Bio' => $request->input('Bio'),
+                
+                'fullName' => $request->file('file')->getClientOriginalName(),
+                'extension' => $request->file('songFile')->getClientOriginalExtension(),
+                'size' => $request->file('songFile')->getSize(),
+                //'path' => url('/storage/upload/files/audio'.'fullName';)
+                'file' => $request->file('songFile'),
+
+            ]);
+        }
+        //dd($request);
+      //  dd($Songs);
+        /*$Songs = Song::create([
 
 
-        $Songs = Song::create([
             'id_Album' => $request->input('id_Album'),
             'id_Artist' => $request->input('id_Artist'),
             'name' => $request->input('name'),
-            'fullName' => $request->input('fullName'),
-            'path' => $request->input('path'),
-            'extension' => $request->input('extension'),
-            'size' => $request->input('size'),
+            'Bio' => $request->input('Bio'),
+            
+            'file' => $request->file('songFile'),
+            //'fullName' => $request->file('songFile')->getClientOriginalName(),
+            //'extension' => $request->file('songFile')->getClientOriginalExtension(),
+            //'size'=> $request->file('songFile')->getSize(),
+
+            
+            //$audioFile => $request->file('songFile'),
+            //'fullName' => $audioFile->getClientOriginalName(),
+            //'extension' => $audioFile->getClientOriginalExtension(),
+            //'size' => $audioFile->getSize(),
+
+            //'fullName' => $request->input('fullName'),
+
+            //'path' => $request->input('path'),
+            //'extension' => $request->input('extension'),
+            //'size' => $request->input('size'),
             'songDate' => $request->input('songDate'),
         ]);
-
-        return redirect('/Songs');
+          */
+        //return redirect('/Songs');
 
 
     }

@@ -123,6 +123,9 @@ class AdminArtists extends Controller
      */
     public function update(Request $request, $idArtist)
     {
+        Artist::pluck('email')[0];
+        $email = Artist::where('idArtist',$idArtist)->get();
+//
         $Artist=Artist::where('idArtist',$idArtist)->update([
             'fullName' => $request->input('fullName'),
             'userName' => $request->input('userName'),
@@ -131,11 +134,15 @@ class AdminArtists extends Controller
             'Bio' => $request->input('Bio'),
         ]);
 
-        $User = User::where('name',$request->input('fullName'))->update([
+        
+        //dd(strcmp(Artist::pluck('email')[0],$email));
+        
+        /*
+        $User = User::where(strcmp(Artist::pluck('email')[0],$email))->update([
             'name' => $request->input('fullName'),
             'email' => $request->input('email'),
             'password' =>  Hash::make($request->input('password'))
-        ]);
+        ]);*/
 
         return redirect('/admin/Artists');
     }

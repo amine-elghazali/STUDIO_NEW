@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Album;
+use App\Models\Artist;
 
 class AdminAlbums extends Controller
 {
@@ -15,9 +16,14 @@ class AdminAlbums extends Controller
     public function index()
     {
         $Albums = Album::all();
-        dd($Albums);
+        //$Artist = Artist::get()->where('$Albums->id_Artist','Artist->idArtist')->pluck('fullName');
+        //dd($Albums);
 
-        //return view('Admin.Admin_Album.index',['Albums' => $Albums]);
+        //dd($Albums);
+
+        return view('Admin.Admin_Album.index',[
+                'albums' => $Albums,
+                ]);
     }
 
     /**
@@ -27,7 +33,10 @@ class AdminAlbums extends Controller
      */
     public function create()
     {
-        return view('Admin.Admin_Album.create');
+
+        $Artists = Artist::all();
+        //dd($Artists);
+        return view('Admin.Admin_Album.create')->with('Artists',$Artists);
     }
 
     /**
@@ -39,12 +48,15 @@ class AdminAlbums extends Controller
     public function store(Request $request)
     {
         $Albums = new Album();
-
+        
+        
+        //dd($request->input('id_Artist'));
+        
         $request->validate([
             'id_Artist' => 'required',
-            'albumName' => 'required | string | max:255',
+            'albumName' => ['required', 'string', 'max:255', 'unique:albums'],
             'Bio' => 'required | string | max:255',
-            'albumDate' => 'required | Date',
+            'albumDate' => 'required | date',
         ]);
 
 
@@ -54,8 +66,8 @@ class AdminAlbums extends Controller
             'Bio' => $request->input('Bio'),
             'albumDate' => $request->input('albumDate'),
         ]);
-
-        return redirect('/Albums');
+        
+        return redirect('admin/Albums'); 
 
     }
 
@@ -76,11 +88,16 @@ class AdminAlbums extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idAlbum)
     {
-        $Album=Album::find($id);
-        dd($Album);
-        //return view('Album.Admin_Album.edit')->with('Album',$Album); // Album as  $Album
+        $Artists = Artist::all();
+        $Album=Album::where('idAlbum',$idAlbum)->first();
+        //dd($Album);
+        return view('Admin.Admin_Album.edit')
+                ->with([
+                    'album' => $Album,
+                    'Artists' => $Artists,
+                ]); // Album as  $Album
     }
 
     /**
@@ -90,16 +107,27 @@ class AdminAlbums extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    
+    public function update(Request $request, $idAlbum)
     {
-        $Album=Album::where('id',$id)->update([
+
+        //dd($request->input('id_Artist'));
+
+        $request->validate([
+            'id_Artist' => 'required',
+            'albumName' => ['required', 'string', 'max:255'],
+            'Bio' => 'required | string | max:255',
+            'albumDate' => 'required | date',
+        ]);
+
+        $Album=Album::where('idAlbum',$idAlbum)->update([
             'id_Artist' => $request->input('id_Artist'),
             'albumName' => $request->input('albumName'),
             'Bio' => $request->input('Bio'),
             'albumDate' => $request->input('albumDate'),
         ]);
-
-        return redirect('/Albums');
+        
+        return redirect('admin/Albums'); 
     }
 
     /**
@@ -108,12 +136,12 @@ class AdminAlbums extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idAlbum)
     {
-        $Album=Album::find($id);
-        dd($id);
-        $Album->delete();
+        //dd($idAlbum);
+        $Album=Album::where('idAlbum',$idAlbum)->delete();
+        
 
-        //return redirect('/Albums');
+        return redirect('admin/Albums');
     }
 }

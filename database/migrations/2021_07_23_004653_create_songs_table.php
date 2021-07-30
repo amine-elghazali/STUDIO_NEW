@@ -20,6 +20,7 @@ class CreateSongsTable extends Migration
             $table->String('name');
             $table->String('Bio');
             $table->date('songDate');
+            $table->string('songFile');
             $table->string('fullName');
             $table->string('path');
             $table->string('extension');
