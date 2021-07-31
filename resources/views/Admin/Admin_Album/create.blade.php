@@ -1,80 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <title>Document</title>
-</head>
-
-<body class="bg-secondary  pt-5">
-    <div class="card border-info w-50 m-auto">
-
-        <div class="card-header">
-            <h3 class="card-title"> Add an album </h3>
-        </div>
+@extends('layouts.admin')
 
 
-        <div class="card-body">
-            <form action="/admin/Albums"  method="POST" enctype="multipart/form-data">
-                @csrf
 
-                <div class="form-group">
-                    <label for="id_Artist">Album artist : </label>
-                    
-                    <select id="id_Artist" name="id_Artist" class="form-control">
-                        <option value="" selected></option>
-                        @foreach ($Artists as $Artist)
+@section('content')
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+            <title>Document</title>
+        </head>
+
+        <body>
+            <div class= " pl-5 pr-5 m-auto pt-5 text-light">
+
+                <div class="card bg-dark" >
+
+                    <div class="card-header text-light">
+                        <h3> Add an album </h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="/admin/Albums"  method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="form-group">
+                                <label for="id_Artist">Album artist : </label>
+                                
+                                <select id="id_Artist" class="form-select" name="id_Artist" class="form-control">
+                                    <option value="" selected> Select an artist</option>
+                                    @foreach ($Artists as $Artist)
+                                        
+                                            <option value="{{$Artist->idArtist}}">{{$Artist->fullName}}</option>
+                                        
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+                            <div  class="form-group">
+                                <label for="albumName">Album name : </label>
+                                    <input type="text" id="albumName" name="albumName" class="form-control" placeholder="Album name" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Bio">Album Bio : </label>
+                                    <input type="text" id="Bio" name="Bio" class="form-control" placeholder="Album Bio" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="albumDate">Album date : </label>
+                                    <input type="date" id="albumDate" name="albumDate" class="form-control" >
+                            </div>
+
                             
-                                <option value="{{$Artist->idArtist}}">{{$Artist->fullName}}</option>
-                            
-                        @endforeach
-                    </select>
 
-                </div>
+                            <div class="pt-3">
+                                <button type="submit" class="btn btn-secondary"> Add album</button>
+                            </div>
 
-                <div  class="form-group">
-                    <label for="albumName">Album name : </label>
-                        <input type="text" id="albumName" name="albumName" class="form-control" placeholder="Album name" >
-                </div>
+                        </form>
+                    </div>
 
-                <div class="form-group">
-                    <label for="Bio">Album Bio : </label>
-                        <input type="text" id="Bio" name="Bio" class="form-control" placeholder="Album Bio" >
-                </div>
+                    <!--    PRINTING ERRORS     -->
 
-                <div class="form-group">
-                    <label for="albumDate">Album date : </label>
-                        <input type="date" id="albumDate" name="albumDate" class="form-control" >
-                </div>
-
-                
-
-                <div class="pt-3">
-                    <button type="submit" class="btn btn-info"> Add album</button>
-                </div>
-
-            </form>
-        </div>
-
-        <!--    PRINTING ERRORS     -->
-
-        @if ($errors->any())
-            <div class="card-footer">
-                <div class="text-danger text-center m-auto ">
-                    @foreach ($errors->all() as $error)
-                        <li class="list-unstyled">
-                            {{ $error }}
-                        </li>
-                    @endforeach
+                    @if ($errors->any())
+                        <div class="card-footer">
+                            <div class="text-danger text-center m-auto ">
+                                @foreach ($errors->all() as $error)
+                                    <li class="list-unstyled">
+                                        {{ $error }}
+                                    </li>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
-        @endif
-
-    </div>
 
 
-</body>
-</html>
+        </body>
+        </html>
+
+@endsection

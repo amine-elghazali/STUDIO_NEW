@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <body>
-    <div class=" pl-5 pr-5 m-auto pt-5">
+    <div class="m-auto pt-5">
         <div class="card">
             <div class="card-header">
                 <h2> Songs </h2>
@@ -50,10 +51,10 @@
 
                                         <td style="display: flex">
                                             <div class="pl-5">
-                                                <a type="button" href="Artists/{{$song->idSong}}/edit" class="btn btn-info"> mettre à jour </a>
+                                                <a type="button" href="Songs/{{$song->idSong}}/edit" class="btn btn-info"> mettre à jour </a>
                                             </div>
                                             <div class="pl-5">
-                                                <form action="songs/{{$song->idSong}}" method="POST">
+                                                <form action="Songs/{{$song->idSong}}" method="POST">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger" > Supprimer </button>
@@ -74,3 +75,5 @@
         </div>
     </div>
 </html>
+
+@endsection

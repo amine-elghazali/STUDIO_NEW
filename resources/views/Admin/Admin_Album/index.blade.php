@@ -60,8 +60,8 @@
                         </table>
                 </div>
                 <div class="card-footer">
-                    Add an Album
-                    <a href="Albums/create" type="button" class="btn btn-info"> Clickez içi</a>
+                    
+                    <a href="Albums/create" type="button" class="btn btn-secondary ml-2"> Add an Album</a>
                 </div>
             </div>
         </div>

@@ -48,7 +48,7 @@ class AdminSongs extends Controller
         $Songs = new Song();
 
 
-
+/*
         $request->validate([
             'id_Album ' => 'required',
             'id_Artist ' => 'required',
@@ -61,10 +61,11 @@ class AdminSongs extends Controller
             //'extension' => 'required | string',
             //'size' => 'required | float',
             'songDate' => 'required | Date',
-        ]);
+        ]);*/
         
+
         //dd($request);
-        if( $request->hasFile('file')){
+        /*if( $request->hasFile('file')){
             $Songs = Song::create([
                 'id_Album' => $request->input('id_Album'),
                 'id_Artist' => $request->input('id_Artist'),
@@ -75,25 +76,32 @@ class AdminSongs extends Controller
                 'extension' => $request->file('songFile')->getClientOriginalExtension(),
                 'size' => $request->file('songFile')->getSize(),
                 //'path' => url('/storage/upload/files/audio'.'fullName';)
-                'file' => $request->file('songFile'),
+                //'file' => $request->file('songFile'),
 
             ]);
-        }
-        //dd($request);
+        }*/
+       // dd($request->input('id_Album'));
       //  dd($Songs);
-        /*$Songs = Song::create([
 
+        $songFile = $request->file('songFile');
 
-            'id_Album' => $request->input('id_Album'),
+        $fileName = $request->file('songFile')->getClientOriginalName();
+
+        $location = public_path('Musics/'.$fileName);
+
+        $Songs = Song::create([
+
             'id_Artist' => $request->input('id_Artist'),
+            'id_Album' => $request->input('id_Album'),
+
             'name' => $request->input('name'),
             'Bio' => $request->input('Bio'),
             
-            'file' => $request->file('songFile'),
-            //'fullName' => $request->file('songFile')->getClientOriginalName(),
-            //'extension' => $request->file('songFile')->getClientOriginalExtension(),
-            //'size'=> $request->file('songFile')->getSize(),
-
+            'songFile' => $request->file('songFile'),
+            'fullName' => $request->file('songFile')->getClientOriginalName(),
+            'extension' => $request->file('songFile')->getClientOriginalExtension(),
+            'size'=> $request->file('songFile')->getSize(),
+            'path' => $request->file('songFile')->store($location),
             
             //$audioFile => $request->file('songFile'),
             //'fullName' => $audioFile->getClientOriginalName(),
@@ -107,7 +115,7 @@ class AdminSongs extends Controller
             //'size' => $request->input('size'),
             'songDate' => $request->input('songDate'),
         ]);
-          */
+          dd($Songs);
         //return redirect('/Songs');
 
 
@@ -130,11 +138,14 @@ class AdminSongs extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idSong)
     {
-        $Song=Song::find($id);
-        dd($Song);
-        //return view('Song.Admin_Song.edit')->with('Song',$Song); // Song as  $Song
+
+        $Song = Song::where('idSong',$idSong)->first();
+       
+        //dd($Song);
+
+        return view('Admin.Admin_Song.edit')->with('Song',$Song); // Song as  $Song
     }
 
     /**
@@ -146,15 +157,21 @@ class AdminSongs extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Song=Song::where('id',$id)->update([
-            'id_Album' => $request->input('id_Album'),
+
+        $request->validate([
+            'id_Album ' => 'required',
+            'id_Artist ' => 'required',
+            'name' => 'required | string | max:255',
+            'Bio' => 'required | string | max:255',
+        ]);
+
+        $Song=Song::where('idSong',$idSong)->update([
+            
             'id_Artist' => $request->input('id_Artist'),
+            'id_Album' => $request->input('id_Album'),
+
             'name' => $request->input('name'),
-            'fullName' => $request->input('fullName'),
-            'path' => $request->input('path'),
-            'extension' => $request->input('extension'),
-            'size' => $request->input('size'),
-            'songDate' => $request->input('songDate'),
+            'Bio' => $request->input('Bio'),
         ]);
 
         return redirect('/Songs');
@@ -166,12 +183,11 @@ class AdminSongs extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idSong)
     {
-        $Song=Song::find($id);
-        //dd($id);
-        $success = $Song->delete();
-        dd($success);
-        //return redirect('/Songs');
+        //dd($idSong);
+        $success=Song::where('idSong',$idSong)->delete();
+        //dd($success);
+        return redirect('/admin/Songs');
     }
 }

@@ -17,14 +17,14 @@ class CreateSongsTable extends Migration
             $table->increments('idSong');
             $table->unsignedInteger('id_Album');
             $table->unsignedInteger('id_Artist');
-            $table->String('name');
-            $table->String('Bio');
+            $table->String('name')->nullable();
+            $table->String('Bio'->nullable());
             $table->date('songDate');
-            $table->string('songFile');
-            $table->string('fullName');
-            $table->string('path');
-            $table->string('extension');
-            $table->float('size');
+            $table->string('songFile')->nullable();
+            $table->string('fullName')->nullable();
+            $table->string('path')->nullable();
+            $table->string('extension')->nullable();
+            $table->double('size')->nullable();
 
             $table->timestamps();
 

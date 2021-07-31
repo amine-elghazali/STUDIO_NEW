@@ -1,3 +1,8 @@
+@extends('layouts.admin')
+
+
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,19 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <body>
     
-
     <form action="/admin/Songs"  method="POST" enctype="multipart/form-data" class="w-50 m-5">
 
         @csrf
 
         <label for="id_Artist"> Artist :</label>
             <select name="id_Artist" id="id_Artist" class="form-select form-select-sm"  select-box">
-                <option value="" selected></option>
+                <option value="" selected> Select an artist</option>
 
                 @foreach ($Artists as $Artist)
                         <option value="{{$Artist->idArtist}}">{{$Artist->fullName}}</option>
@@ -25,8 +28,8 @@
             </select>
 
         <label for="id_Album"> Album :</label>
-            <select name="id_Album" id="id_Album" class="form-select form-select-sm" ">
-                <option value="" selected></option>
+            <select name="id_Album" id="id_Album" class="form-select form-select-sm">
+                <option value="" selected> Select the album</option>
 
                 @foreach ($Albums as $Album)
                         <option value="{{$Album->idAlbum}}">{{$Album->albumName}}</option>
@@ -40,8 +43,8 @@
         <label for="Bio">Song bio : </label>
             <input type="text" name="Bio" class="form-control" id="Bio">
 
-        <label for="file">Song File : </label>
-            <input type="file" name="file" class="form-control" id="file">
+        <label for="songFile">Song File : </label>
+            <input type="file" name="songFile" class="form-control" id="songFile">
 
         <label for="songDate">Song date : </label>
             <input type="date" name="songDate" class="form-control" id="songDate">
@@ -53,3 +56,5 @@
 
 </body>
 </html>
+
+@endsection

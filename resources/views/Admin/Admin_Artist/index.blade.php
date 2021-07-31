@@ -45,7 +45,7 @@
                                             <td>  {{$artist->Bio}}  </td>
 
                                             <td style="display: flex">
-                                                <a type="button" href="Albums/{{$artist->idArtist}}/edit" class="btn btn-warning"> <i class="uil-edit"></i></a>
+                                                <a type="button" href="Artists/{{$artist->idArtist}}/edit" class="btn btn-warning"> <i class="uil-edit"></i></a>
 
                                                 <form action="Artists/{{$artist->idArtist}}" method="POST">
                                                     @csrf
