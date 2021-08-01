@@ -20,6 +20,8 @@ class CreateArtistsTable extends Migration
             $table->String('artistName');
             $table->String('email');
             $table->String('Bio');
+            $table->string('artistPic');
+
 
             $table->timestamps();
         });

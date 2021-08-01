@@ -48,6 +48,9 @@
 
         <label for="songDate">Song date : </label>
             <input type="date" name="songDate" class="form-control" id="songDate">
+
+        <label for="songPic">Song picture : </label>
+            <input type="file" name="songPic" class="form-control" id="songPic">
             
             <button type="submit" class="btn btn-info mt-5"> Submit </button>
 

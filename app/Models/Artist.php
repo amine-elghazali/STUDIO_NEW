@@ -9,7 +9,7 @@ class Artist extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['idArtist','fullName','userName','artistName','email','Bio'];
+    protected $fillable = ['idArtist','fullName','userName','artistName','email','Bio','artistPic'];
 
     public function Album()
       {

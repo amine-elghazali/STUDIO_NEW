@@ -19,6 +19,8 @@ class CreateAlbumsTable extends Migration
             $table->string('albumName');
             $table->String('Bio');
             $table->date('albumDate');
+            $table->string('albumPic');
+
 
             $table->timestamps();
 

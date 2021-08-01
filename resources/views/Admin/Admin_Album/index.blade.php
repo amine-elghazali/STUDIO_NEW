@@ -25,6 +25,7 @@
                             <caption> List of Albums </caption>
                             <thead>
                                 <tr class="table-dark">
+                                    <th></th>
                                     <th> Album name </th>
                                     <th> Album bio</th>
                                     <th> Artist</th>
@@ -36,6 +37,7 @@
                             <tbody>
                                 @foreach ($albums as $Album)
                                     <tr>
+                                        <td>{{$Album->albumPic}}</td>
                                         <td>  {{$Album->albumName}}  </td>
                                         <td>  {{$Album->Bio}}  </td>
                                         <td>  {{  App\Models\Artist::where('idArtist',$Album->id_Artist)->value("fullName")  }}  </td>

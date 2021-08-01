@@ -50,8 +50,16 @@ class AdminArtists extends Controller
     {
         $Artists = new Artist();
 
+        $artistPic = $request->file('artistPic');
+
+        $fileName = $request->file('artistPic')->getClientOriginalName();
+
+        $location = public_path('Images/'.$fileName);
+
+
         $Role = role::all()->where('idRole',2);
 
+/*
         $request->validate([
             'fullName' => ['required', 'string', 'max:255'],
             'userName' => 'required | string | max:255',
@@ -60,13 +68,16 @@ class AdminArtists extends Controller
             'Bio' => 'required',
             'password' => ['required', 'string', 'min:8'],
         ]);
-
+*/
         $Artists = Artist::create([
             'fullName' => $request->input('fullName'),
             'userName' => $request->input('userName'),
             'artistName' => $request->input('artistName'),
             'email' => $request->input('email'),
             'Bio' => $request->input('Bio'),
+
+            'artistPic' => $request->file('artistPic')->store($location),
+
         ]);
 
         $User = User::create([
@@ -77,7 +88,6 @@ class AdminArtists extends Controller
         ]);
 
         return redirect('/admin/Artists');
-
 
     }
 
@@ -132,6 +142,8 @@ class AdminArtists extends Controller
             'artistName' => $request->input('artistName'),
             'email' => $request->input('email'),
             'Bio' => $request->input('Bio'),
+
+            
         ]);
 
         

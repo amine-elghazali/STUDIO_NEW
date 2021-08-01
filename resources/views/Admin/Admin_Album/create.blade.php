@@ -56,6 +56,8 @@
                                     <input type="date" id="albumDate" name="albumDate" class="form-control" >
                             </div>
 
+                            <label for="albumPic">Song picture : </label>
+                                <input type="file" name="albumPic" class="form-control" id="albumPic">
                             
 
                             <div class="pt-3">

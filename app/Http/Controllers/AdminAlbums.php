@@ -65,6 +65,9 @@ class AdminAlbums extends Controller
             'albumName' => $request->input('albumName'),
             'Bio' => $request->input('Bio'),
             'albumDate' => $request->input('albumDate'),
+
+            'albumPic' => $request->file('albumPic'),
+
         ]);
         
         return redirect('admin/Albums'); 
@@ -125,6 +128,9 @@ class AdminAlbums extends Controller
             'albumName' => $request->input('albumName'),
             'Bio' => $request->input('Bio'),
             'albumDate' => $request->input('albumDate'),
+
+            'albumtPic' => $request->file('albumtPic'),
+
         ]);
         
         return redirect('admin/Albums'); 

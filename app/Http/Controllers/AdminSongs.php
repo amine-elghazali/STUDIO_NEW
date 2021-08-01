@@ -63,26 +63,7 @@ class AdminSongs extends Controller
             'songDate' => 'required | Date',
         ]);*/
         
-
-        //dd($request);
-        /*if( $request->hasFile('file')){
-            $Songs = Song::create([
-                'id_Album' => $request->input('id_Album'),
-                'id_Artist' => $request->input('id_Artist'),
-                'name' => $request->input('name'),
-                'Bio' => $request->input('Bio'),
-                
-                'fullName' => $request->file('file')->getClientOriginalName(),
-                'extension' => $request->file('songFile')->getClientOriginalExtension(),
-                'size' => $request->file('songFile')->getSize(),
-                //'path' => url('/storage/upload/files/audio'.'fullName';)
-                //'file' => $request->file('songFile'),
-
-            ]);
-        }*/
-       // dd($request->input('id_Album'));
-      //  dd($Songs);
-
+        
         $songFile = $request->file('songFile');
 
         $fileName = $request->file('songFile')->getClientOriginalName();
@@ -103,6 +84,10 @@ class AdminSongs extends Controller
             'size'=> $request->file('songFile')->getSize(),
             'path' => $request->file('songFile')->store($location),
             
+            'songDate' => $request->input('songDate'),
+
+            'songPic' => $request->file('songPic'),
+
             //$audioFile => $request->file('songFile'),
             //'fullName' => $audioFile->getClientOriginalName(),
             //'extension' => $audioFile->getClientOriginalExtension(),
@@ -113,7 +98,6 @@ class AdminSongs extends Controller
             //'path' => $request->input('path'),
             //'extension' => $request->input('extension'),
             //'size' => $request->input('size'),
-            'songDate' => $request->input('songDate'),
         ]);
           dd($Songs);
         //return redirect('/Songs');
@@ -172,6 +156,9 @@ class AdminSongs extends Controller
 
             'name' => $request->input('name'),
             'Bio' => $request->input('Bio'),
+
+            'songFile' => $request->file('songFile'),
+            'songPic' => $request->file('songPic')
         ]);
 
         return redirect('/Songs');

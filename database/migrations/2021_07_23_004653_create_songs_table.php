@@ -18,14 +18,14 @@ class CreateSongsTable extends Migration
             $table->unsignedInteger('id_Album');
             $table->unsignedInteger('id_Artist');
             $table->String('name')->nullable();
-            $table->String('Bio'->nullable());
+            $table->String('Bio')->nullable();
             $table->date('songDate');
             $table->string('songFile')->nullable();
             $table->string('fullName')->nullable();
             $table->string('path')->nullable();
             $table->string('extension')->nullable();
-            $table->double('size')->nullable();
-
+            $table->double('size', 15 , 8)->nullable();
+            $table->string('songPic');
             $table->timestamps();
 
         // Foreign Key  ( Artist ) :
