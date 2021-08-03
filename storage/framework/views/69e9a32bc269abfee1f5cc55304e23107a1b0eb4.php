@@ -1,7 +1,7 @@
-@extends('layouts.admin')
 
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,32 +38,33 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($songs as $song)
+                            <?php $__currentLoopData = $songs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $song): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                                     <tr>
-                                        <td> <img src="{{ asset ('/images/'.$song->songPic ) }}" alt="song Picture" style="width:100px" > </td>
+                                        <td> <img src="<?php echo e(asset ('/images/'.$song->songPic )); ?>" alt="song Picture" style="width:100px" > </td>
 
-                                        <td>  {{$song->name}}  </td>
-                                        <td>  {{$song->Bio}}  </td>
-                                        <td>  {{$song->fullName}}  </td>
+                                        <td>  <?php echo e($song->name); ?>  </td>
+                                        <td>  <?php echo e($song->Bio); ?>  </td>
+                                        <td>  <?php echo e($song->fullName); ?>  </td>
                                         <td>
                                            <div>
-                                               {{$song->path}}
+                                               <?php echo e($song->path); ?>
+
                                            </div>
                                         </td>
-                                        <td>  {{$song->extension}}  </td>
-                                        <td>  {{$song->size}}  </td>
-                                        <td>  {{$song->songDate}}  </td>
+                                        <td>  <?php echo e($song->extension); ?>  </td>
+                                        <td>  <?php echo e($song->size); ?>  </td>
+                                        <td>  <?php echo e($song->songDate); ?>  </td>
 
                         
                                         <td style="display: flex">
                                             <div class="pl-5">
-                                                <a type="button" href="Songs/{{$song->idSong}}/edit" class="btn btn-warning"> <i class="uil-edit"></i> </a>
+                                                <a type="button" href="Songs/<?php echo e($song->idSong); ?>/edit" class="btn btn-warning"> <i class="uil-edit"></i> </a>
                                             </div>
                                             <div class="pl-5">
-                                                <form action="Songs/{{$song->idSong}}" method="POST">
-                                                    @csrf
-                                                    @method('delete')
+                                                <form action="Songs/<?php echo e($song->idSong); ?>" method="POST">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('delete'); ?>
                                                     <button type="submit" class="btn btn-danger ml-2" > <i class="uil-trash"></i> </button>
                                                 </form>
                                             </div>
@@ -71,7 +72,7 @@
 
                                     </tr>
                                 
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
             </div>
@@ -82,4 +83,6 @@
     </div>
 </html>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dell\Desktop\proj\STUDIO_NEW\resources\views/Admin/Admin_Song/index.blade.php ENDPATH**/ ?>

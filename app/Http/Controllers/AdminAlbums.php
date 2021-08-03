@@ -50,7 +50,10 @@ class AdminAlbums extends Controller
         $Albums = new Album();
         
         
-        //dd($request->input('id_Artist'));
+        $ImageName = time() . '-' . $request->fullName . '-' . $request->albumPic->guessClientExtension();  
+
+        $request->albumPic->move(public_path('images'),$ImageName);
+
         
         $request->validate([
             'id_Artist' => 'required',
@@ -66,7 +69,7 @@ class AdminAlbums extends Controller
             'Bio' => $request->input('Bio'),
             'albumDate' => $request->input('albumDate'),
 
-            'albumPic' => $request->file('albumPic'),
+            'albumPic' => $ImageName,
 
         ]);
         

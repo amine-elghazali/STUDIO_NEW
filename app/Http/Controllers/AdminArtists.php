@@ -24,6 +24,22 @@ class AdminArtists extends Controller
 
         return view('Admin.Admin_Artist.index',['Artists' => $Artists]);
 
+
+        /* AJAX TEST :  */
+
+        /*if ($request->ajax()) {
+                    $Artists = Artist::all();
+                    return datatables()->of($Artists)
+                        ->addColumn('Actions', function ($row) {
+                            $html = '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
+                            $html .= '<button data-rowid="' . $row->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+                            return $html;
+                        })->toJson();
+                }
+        
+                return view('customers.index');
+            }*/
+
     }
 
     /**
@@ -47,19 +63,18 @@ class AdminArtists extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {       
         $Artists = new Artist();
-
-        $artistPic = $request->file('artistPic');
-
-        $fileName = $request->file('artistPic')->getClientOriginalName();
-
-        $location = public_path('Images/'.$fileName);
-
 
         $Role = role::all()->where('idRole',2);
 
-/*
+        $ImageName = time() . '-' . $request->fullName . '-' . $request->artistPic->guessClientExtension();  
+
+        $request->artistPic->move(public_path('images'),$ImageName);        
+
+        //dd($ImageName);
+
+        //dd($request->all());
         $request->validate([
             'fullName' => ['required', 'string', 'max:255'],
             'userName' => 'required | string | max:255',
@@ -68,7 +83,6 @@ class AdminArtists extends Controller
             'Bio' => 'required',
             'password' => ['required', 'string', 'min:8'],
         ]);
-*/
         $Artists = Artist::create([
             'fullName' => $request->input('fullName'),
             'userName' => $request->input('userName'),
@@ -76,7 +90,7 @@ class AdminArtists extends Controller
             'email' => $request->input('email'),
             'Bio' => $request->input('Bio'),
 
-            'artistPic' => $request->file('artistPic')->store($location),
+            'artistPic' => $ImageName,
 
         ]);
 
@@ -86,6 +100,7 @@ class AdminArtists extends Controller
             'role_id' => $Role[1]->idRole,
             'password' =>  Hash::make($request->input('password')),
         ]);
+        
 
         return redirect('/admin/Artists');
 

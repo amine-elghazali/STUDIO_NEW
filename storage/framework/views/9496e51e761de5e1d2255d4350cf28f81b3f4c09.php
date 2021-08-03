@@ -13,15 +13,15 @@
 
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="{{asset ('css/bootstrap-reboot.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/bootstrap-grid.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/owl.carousel.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/magnific-popup.cs')}}s">
-	<link rel="stylesheet" href="{{asset ('css/select2.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/paymentfont.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/slider-radio.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/plyr.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/main.css')}}">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/bootstrap-reboot.min.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/bootstrap-grid.min.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/owl.carousel.min.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/magnific-popup.cs')); ?>s">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/select2.min.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/paymentfont.min.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/slider-radio.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/plyr.css')); ?>">
+	<link rel="stylesheet" href="<?php echo e(asset ('css/main.css')); ?>">
 
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
@@ -137,7 +137,7 @@
 	<div class="sidebar">
 		<!-- sidebar logo -->
 		<div class="sidebar__logo">
-			<img src="{{asset ('img/logo.svg')}}" alt="">
+			<img src="<?php echo e(asset ('img/logo.svg')); ?>" alt="">
 		</div>
 		<!-- end sidebar logo -->
 
@@ -219,7 +219,7 @@
 	<!-- main content -->
 	<main class="main">
 
-		@yield('content')
+		<?php echo $__env->yieldContent('content'); ?>
 
 	</main>
 	<!-- end main content -->
@@ -418,17 +418,18 @@
 	<!-- end modal info -->
 
 	<!-- JS -->}}
-	<script src="{{ asset ('js/jquery-3.5.1.min.js')}}"></script>
-	<script src="{{ asset ('js/bootstrap.bundle.min.js')}}"></script>
-	<script src="{{ asset ('js/owl.carousel.min.js')}}"></script>
-	<script src="{{ asset ('js/jquery.magnific-popup.min.js')}}"></script>
-	<script src="{{ asset ('js/smooth-scrollbar.js')}}"></script>
-	<script src="{{ asset ('js/select2.min.js')}}"></script>
-	<script src="{{ asset ('js/slider-radio.js')}}"></script>
-	<script src="{{ asset ('js/jquery.inputmask.min.js')}}"></script>
-	<script src="{{ asset ('js/plyr.min.js')}}"></script>
-	<script src="{{ asset ('js/main.js')}}"></script>
+	<script src="<?php echo e(asset ('js/jquery-3.5.1.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/bootstrap.bundle.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/owl.carousel.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/jquery.magnific-popup.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/smooth-scrollbar.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/select2.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/slider-radio.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/jquery.inputmask.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/plyr.min.js')); ?>"></script>
+	<script src="<?php echo e(asset ('js/main.js')); ?>"></script>
 </body>
 
 <!-- Mirrored from dmitryvolkov.me/demo/volna/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 18 Jul 2021 15:25:58 GMT -->
 </html>
+<?php /**PATH C:\Users\dell\Desktop\proj\STUDIO_NEW\resources\views/layouts/admin.blade.php ENDPATH**/ ?>

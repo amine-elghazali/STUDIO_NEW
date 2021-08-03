@@ -63,13 +63,31 @@ class AdminSongs extends Controller
             'songDate' => 'required | Date',
         ]);*/
         
+        /* Song Pic */
+
+        $ImageName = time() . '-' . $request->fullName . '-' . $request->songPic->guessClientExtension();  
+
+        $request->songPic->move(public_path('images'),$ImageName);
+
+        /* Song AUDIO */
+
+
+        $audioName = time() . '-' . $request->fullName . '-' . $request->songFile->guessClientExtension(); 
+
+        $size = $request->songFile->getSize();
+
         
+        $path = $request->songFile->move(public_path('musics'),$audioName);
+
+        //dd($path);
+
+/*
         $songFile = $request->file('songFile');
 
         $fileName = $request->file('songFile')->getClientOriginalName();
 
-        $location = public_path('Musics/'.$fileName);
-
+        $location = public_path('musics/'.$fileName);
+*/
         $Songs = Song::create([
 
             'id_Artist' => $request->input('id_Artist'),
@@ -78,15 +96,15 @@ class AdminSongs extends Controller
             'name' => $request->input('name'),
             'Bio' => $request->input('Bio'),
             
-            'songFile' => $request->file('songFile'),
+            'songFile' => $audioName,
             'fullName' => $request->file('songFile')->getClientOriginalName(),
             'extension' => $request->file('songFile')->getClientOriginalExtension(),
-            'size'=> $request->file('songFile')->getSize(),
-            'path' => $request->file('songFile')->store($location),
+            'size'=> $size,
+            'path' => $path,
             
             'songDate' => $request->input('songDate'),
 
-            'songPic' => $request->file('songPic'),
+            'songPic' => $ImageName,
 
             //$audioFile => $request->file('songFile'),
             //'fullName' => $audioFile->getClientOriginalName(),
@@ -99,7 +117,6 @@ class AdminSongs extends Controller
             //'extension' => $request->input('extension'),
             //'size' => $request->input('size'),
         ]);
-          dd($Songs);
         //return redirect('/Songs');
 
 

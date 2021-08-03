@@ -1,8 +1,8 @@
-@extends('layouts.admin')
 
 
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     
     <!DOCTYPE html>
     <html lang="en">
@@ -36,31 +36,31 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($albums as $Album)
+                                <?php $__currentLoopData = $albums; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $Album): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td> <img src="{{ asset ('/images/'.$Album->albumPic ) }}" alt="Album Picture" style="width:100px" > </td>
+                                        <td> <img src="<?php echo e(asset ('/images/'.$Album->albumPic )); ?>" alt="Album Picture" style="width:100px" > </td>
 
-                                        <td>  {{$Album->albumPic}}</td>
-                                        <td>  {{$Album->albumName}}  </td>
-                                        <td>  {{$Album->Bio}}  </td>
-                                        <td>  {{  App\Models\Artist::where('idArtist',$Album->id_Artist)->value("fullName")  }}  </td>
-                                        <td>  {{$Album->albumDate}}  </td>
+                                        <td>  <?php echo e($Album->albumPic); ?></td>
+                                        <td>  <?php echo e($Album->albumName); ?>  </td>
+                                        <td>  <?php echo e($Album->Bio); ?>  </td>
+                                        <td>  <?php echo e(App\Models\Artist::where('idArtist',$Album->id_Artist)->value("fullName")); ?>  </td>
+                                        <td>  <?php echo e($Album->albumDate); ?>  </td>
 
                                         <td style="display: flex">
                                             <div class="pl-5">
-                                                <a type="button" href="Albums/{{$Album->idAlbum}}/edit"class="btn btn-warning"> <i class="uil-edit"></i></a>
+                                                <a type="button" href="Albums/<?php echo e($Album->idAlbum); ?>/edit"class="btn btn-warning"> <i class="uil-edit"></i></a>
                                             </div>
                                             <div>
-                                                <form action="Albums/{{$Album->idAlbum}}" method="POST">
-                                                    @csrf
-                                                    @method('delete')
+                                                <form action="Albums/<?php echo e($Album->idAlbum); ?>" method="POST">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('delete'); ?>
                                                     <button type="submit" class="btn btn-danger ml-2" > <i class="uil-trash"></i> </button>
                                                 </form>
                                             </div>
                                         </td>
 
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                 </div>
@@ -71,4 +71,6 @@
             </div>
         </div>
     </html>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dell\Desktop\proj\STUDIO_NEW\resources\views/Admin/Admin_Album/index.blade.php ENDPATH**/ ?>
