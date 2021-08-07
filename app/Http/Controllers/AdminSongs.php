@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Song;
 use App\Models\Artist;
 use App\Models\Album;
-
+use DataTables;
 
 class AdminSongs extends Controller
 {
@@ -15,12 +15,60 @@ class AdminSongs extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $Songs = Song::all();
-        //dd($Songs);
+        $Artists= Artist::all();
+        $Albums= Album::all();
 
-        return view('Admin.Admin_Song.index',['songs' => $Songs]);
+        if($request->ajax()){
+            $allData = DataTables::of($Songs)
+                        ->addIndexColumn()
+                        ->addColumn('Picture', function ($Songs) { 
+                            $url= asset('Images/'.$Songs->songPic);
+                            return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" style="width:100%" />';
+                                })
+                        ->addColumn('Artist', function ($Songs) { 
+                            $Artist= Artist::where('idArtist',$Songs->id_Artist)->value('fullName');
+                            return $Artist;
+                                })
+                        ->addColumn('Album', function ($Songs) { 
+                            $Album= Album::where('idAlbum',$Songs->id_Album)->value('albumName');
+                            return $Album;
+                                })
+                        ->addColumn('action',function($Songs){
+                            $btn = '<a href="javascript:void(0)"
+                                        data-toggle="tooltip" 
+                                        data-id="'.$Songs->idSong.'" 
+                                        data-original-title="Edit"  class="edit btn btn-outline-primary btn-sm ml-3 mt-3 editSong">
+                                        <i class="far fa-edit"></i>
+                                    </a>'  ;   
+                            $btn .= '<a href="javascript:void(0)"
+                                        data-toggle="tooltip" 
+                                        data-id="'.$Songs->idSong.'" 
+                                        data-original-title="Delete"  class="delete btn btn-outline-danger btn-sm ml-3 mt-3 deleteSong">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>'  ;
+
+                            return $btn;
+                        })
+                        ->addColumn('details',function($Songs){
+                            $btnDetails =  '<a href="javascript:void(0)"
+                                            data-toggle="tooltip" 
+                                            data-id="'.$Songs->idSong.'" 
+                                            data-original-title="Edit"  class="edit btn btn-outline-primary btn-sm ml-3 mt-3 detailSong">
+                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        </a>'  ;   
+                            return $btnDetails;
+                        })
+                        
+                        ->rawColumns(['action','Picture','Artist','Album','details'])
+                        ->make(true);
+
+                        return $allData;
+        }
+
+        return view('Admin.Admin_Song.index',compact('Songs','Albums','Artists'));
     }
 
     /**
@@ -30,11 +78,7 @@ class AdminSongs extends Controller
      */
     public function create()
     {
-        return view('Admin.Admin_Song.create')
-                ->with([
-                    'Artists' => Artist::all(),
-                    'Albums' => Album::all()
-                ]);
+
     }
 
     /**
@@ -45,23 +89,17 @@ class AdminSongs extends Controller
      */
     public function store(Request $request)
     {
-        $Songs = new Song();
 
 
-/*
         $request->validate([
             'id_Album ' => 'required',
             'id_Artist ' => 'required',
             'name' => 'required | string | max:255',
             'Bio' => 'required | string | max:255',
-            //'songFile' => 'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,
-            //'file' => 'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,
-            //'fullName' => 'required | string | max:255',
-            //'path' => 'required | string',
-            //'extension' => 'required | string',
-            //'size' => 'required | float',
+            'songFile' => 'file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,
+            'songPic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'songDate' => 'required | Date',
-        ]);*/
+        ]);
         
         /* Song Pic */
 
@@ -76,7 +114,6 @@ class AdminSongs extends Controller
 
         $size = $request->songFile->getSize();
 
-        
         $path = $request->songFile->move(public_path('musics'),$audioName);
 
         //dd($path);
@@ -88,13 +125,14 @@ class AdminSongs extends Controller
 
         $location = public_path('musics/'.$fileName);
 */
-        $Songs = Song::create([
+        $Songs = Song::updateOrCreate(
+          
+            [
+            'id_Artist' => $request->id_Artist,
+            'id_Album' => $request->id_Album,
 
-            'id_Artist' => $request->input('id_Artist'),
-            'id_Album' => $request->input('id_Album'),
-
-            'name' => $request->input('name'),
-            'Bio' => $request->input('Bio'),
+            'name' => $request->name,
+            'Bio' => $request->Bio,
             
             'songFile' => $audioName,
             'fullName' => $request->file('songFile')->getClientOriginalName(),
@@ -102,23 +140,12 @@ class AdminSongs extends Controller
             'size'=> $size,
             'path' => $path,
             
-            'songDate' => $request->input('songDate'),
+            'songDate' => $request->songDate,
 
             'songPic' => $ImageName,
-
-            //$audioFile => $request->file('songFile'),
-            //'fullName' => $audioFile->getClientOriginalName(),
-            //'extension' => $audioFile->getClientOriginalExtension(),
-            //'size' => $audioFile->getSize(),
-
-            //'fullName' => $request->input('fullName'),
-
-            //'path' => $request->input('path'),
-            //'extension' => $request->input('extension'),
-            //'size' => $request->input('size'),
         ]);
-        //return redirect('/Songs');
 
+        return response()->json(['success' => 'Song Added Successfully']);
 
     }
 
@@ -142,11 +169,9 @@ class AdminSongs extends Controller
     public function edit($idSong)
     {
 
-        $Song = Song::where('idSong',$idSong)->first();
+        $Song = Song::find($idSong);
        
-        //dd($Song);
-
-        return view('Admin.Admin_Song.edit')->with('Song',$Song); // Song as  $Song
+        return response()->json($Song);
     }
 
     /**
@@ -158,27 +183,7 @@ class AdminSongs extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $request->validate([
-            'id_Album ' => 'required',
-            'id_Artist ' => 'required',
-            'name' => 'required | string | max:255',
-            'Bio' => 'required | string | max:255',
-        ]);
-
-        $Song=Song::where('idSong',$idSong)->update([
             
-            'id_Artist' => $request->input('id_Artist'),
-            'id_Album' => $request->input('id_Album'),
-
-            'name' => $request->input('name'),
-            'Bio' => $request->input('Bio'),
-
-            'songFile' => $request->file('songFile'),
-            'songPic' => $request->file('songPic')
-        ]);
-
-        return redirect('/Songs');
     }
 
     /**
@@ -189,9 +194,17 @@ class AdminSongs extends Controller
      */
     public function destroy($idSong)
     {
-        //dd($idSong);
-        $success=Song::where('idSong',$idSong)->delete();
-        //dd($success);
-        return redirect('/admin/Songs');
+        
+        $success=Song::find($idSong)->delete();
+        
+        return response()->json(['success'=> $success]);
     }
+
+    
+    public function getOneSong($idSong){
+        $songDetail = Song::find($idSong);
+
+        return response()->json($songDetail);
+    }
+
 }

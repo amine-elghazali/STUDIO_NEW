@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Artist;
 use App\Models\User;
 use App\Models\role;
-
+use DataTables;
 
 class AdminArtists extends Controller
 {
@@ -17,28 +17,41 @@ class AdminArtists extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $Artists = Artist::all();
-        //dd($Artists);
+        $Artists = Artist::get();
 
-        return view('Admin.Admin_Artist.index',['Artists' => $Artists]);
+        if($request->ajax()){
+            $allData = DataTables::of($Artists)
+                        ->addIndexColumn()
+                        ->addColumn('Picture', function ($Artists) { 
+                            $url= asset('Images/'.$Artists->artistPic);
+                            return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" style="width:100%" />';
+                                })
+                        ->addColumn('action',function($Artists){
+                            $btn = '<a href="javascript:void(0)"
+                                        data-toggle="tooltip" 
+                                        data-id="'.$Artists->idArtist.'" 
+                                        data-original-title="Edit"  class="edit btn btn btn-outline-primary btn-sm ml-3 mt-3 editArtist">
+                                       <i class="far fa-edit"></i>
+                                    </a>'  ;   
+                            $btn .= '<a href="javascript:void(0)"
+                                data-toggle="tooltip" 
+                                data-id="'.$Artists->idArtist.'" 
+                                data-original-title="Delete"  class="delete btn btn-outline-danger btn-sm ml-3 mt-3 btn-light deleteArtist">
+                                <i class="far fa-trash-alt"></i>
+                            </a>'  ;   
 
+                            return $btn;
+                        })
+                        
+                        ->rawColumns(['action','Picture'])
+                        ->make(true);
 
-        /* AJAX TEST :  */
+                        return $allData;
+        }
 
-        /*if ($request->ajax()) {
-                    $Artists = Artist::all();
-                    return datatables()->of($Artists)
-                        ->addColumn('Actions', function ($row) {
-                            $html = '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
-                            $html .= '<button data-rowid="' . $row->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
-                            return $html;
-                        })->toJson();
-                }
-        
-                return view('customers.index');
-            }*/
+        return view('Admin.Admin_Artist.index',compact('Artists'));
 
     }
 
@@ -51,9 +64,9 @@ class AdminArtists extends Controller
 
     public function create()
     {
-        $Role = role::all()->where('idRole',2);
+      //  $Role = role::all()->where('idRole',2);
         //dd($Role);
-        return view('Admin.Admin_Artist.create')->with('Role',$Role[1]->roleName);
+      //  return view('Admin.Admin_Artist.create')->with('Role',$Role[1]->roleName);
     }
 
     /**
@@ -64,45 +77,58 @@ class AdminArtists extends Controller
      */
     public function store(Request $request)
     {       
-        $Artists = new Artist();
 
-        $Role = role::all()->where('idRole',2);
 
-        $ImageName = time() . '-' . $request->fullName . '-' . $request->artistPic->guessClientExtension();  
-
-        $request->artistPic->move(public_path('images'),$ImageName);        
-
-        //dd($ImageName);
-
-        //dd($request->all());
         $request->validate([
-            'fullName' => ['required', 'string', 'max:255'],
-            'userName' => 'required | string | max:255',
-            'artistName' => 'required | string | max:255',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'Bio' => 'required',
-            'password' => ['required', 'string', 'min:8'],
-        ]);
-        $Artists = Artist::create([
-            'fullName' => $request->input('fullName'),
-            'userName' => $request->input('userName'),
-            'artistName' => $request->input('artistName'),
-            'email' => $request->input('email'),
-            'Bio' => $request->input('Bio'),
+            'fullName' => 'required | required ',
+            'userName' => 'required | required ',
+            'artistName' => 'required | required ',
+            'email' => 'required | required | email',
+            'Bio' => 'required | required ',
+            'artistPic' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+          ]);
 
-            'artistPic' => $ImageName,
+          if($request->file('artistPic')){
 
-        ]);
+            $image = $request->file('artistPic');
 
-        $User = User::create([
-            'name' => $request->input('fullName'),
-            'email' => $request->input('email'),
-            'role_id' => $Role[1]->idRole,
-            'password' =>  Hash::make($request->input('password')),
-        ]);
+
+            $ImageName = time() . '-' . $request->fullName . '-' . $image->guessClientExtension();  
+
         
+            $destinationPath = public_path('/Images');
 
-        return redirect('/admin/Artists');
+            $image->move($destinationPath,$ImageName);
+          }
+
+     Artist::updateOrCreate(
+        [
+            'idArtist' => $request->idArtist
+        ],
+
+        [
+            'fullName' => $request->fullName,
+            'userName' => $request->userName,
+            'artistName' => $request->artistName,
+            'email' => $request->email,
+            'Bio' => $request->Bio,
+            'artistPic' => $ImageName,
+        ]);
+
+
+        /*User::updateOrCreate([
+            [
+                'email' => $request->email
+            ],
+            'name' => $request->fullName,
+            'email' => $request->email,
+            'role_id' => 2,
+            'password' =>  Hash::make($request->password),
+        ]);*/
+
+
+
+        return response()->json(['success' => 'Artist Added Successfully']);
 
     }
 
@@ -125,18 +151,9 @@ class AdminArtists extends Controller
      */
     public function edit($idArtist)
     {
-        $Role = role::all()->where('idRole',2);
+        $Artist = Artist::find($idArtist);
 
-
-        $Artist=Artist::where('idArtist',$idArtist)->first();
-        //dd($Artist);
-        return view('Admin.Admin_Artist.edit')
-                ->with([
-                    'artist'=>$Artist,
-                    'Role' =>$Role[1]->roleName,
-                ]);
-                // artist as  $Artist
-
+        return response()->json($Artist);
     }
 
     /**
@@ -148,30 +165,7 @@ class AdminArtists extends Controller
      */
     public function update(Request $request, $idArtist)
     {
-        Artist::pluck('email')[0];
-        $email = Artist::where('idArtist',$idArtist)->get();
-//
-        $Artist=Artist::where('idArtist',$idArtist)->update([
-            'fullName' => $request->input('fullName'),
-            'userName' => $request->input('userName'),
-            'artistName' => $request->input('artistName'),
-            'email' => $request->input('email'),
-            'Bio' => $request->input('Bio'),
-
-            
-        ]);
-
-        
-        //dd(strcmp(Artist::pluck('email')[0],$email));
-        
-        /*
-        $User = User::where(strcmp(Artist::pluck('email')[0],$email))->update([
-            'name' => $request->input('fullName'),
-            'email' => $request->input('email'),
-            'password' =>  Hash::make($request->input('password'))
-        ]);*/
-
-        return redirect('/admin/Artists');
+    
     }
 
     /**
@@ -182,9 +176,9 @@ class AdminArtists extends Controller
      */
     public function destroy($idArtist)
     {
-        //dd($idArtist);
-        $success= Artist::where('idArtist',$idArtist)->delete();
-        //dd($success);
-        return redirect('/admin/Artists');
+
+        $success = Artist::find($idArtist)->delete();
+
+        return response()->json(['success'=> $success]);
     }
 }

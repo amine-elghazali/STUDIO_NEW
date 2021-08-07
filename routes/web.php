@@ -38,6 +38,7 @@ Route::group([ 'prefix' => 'admin', 'middleware' => ['isAdmin','auth','PreventBa
         Route::resource('/Artists',App\Http\Controllers\AdminArtists::class);
         Route::resource('/Albums', App\Http\Controllers\AdminAlbums::class);
         Route::resource('/Songs', App\Http\Controllers\AdminSongs::class);
+        Route::get('/Songs/{idSong}/details',[App\Controllers\AdminSongs::class,'getOneSong']);
 
 });
 

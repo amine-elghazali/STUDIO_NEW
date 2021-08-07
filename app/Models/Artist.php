@@ -9,6 +9,8 @@ class Artist extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'idArtist';
+
     protected $fillable = ['idArtist','fullName','userName','artistName','email','Bio','artistPic'];
 
     public function Album()

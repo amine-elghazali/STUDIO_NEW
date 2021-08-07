@@ -5,23 +5,13 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<link  rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="{{asset ('css/bootstrap-reboot.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/bootstrap-grid.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/owl.carousel.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/magnific-popup.cs')}}s">
-	<link rel="stylesheet" href="{{asset ('css/select2.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/paymentfont.min.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/slider-radio.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/plyr.css')}}">
-	<link rel="stylesheet" href="{{asset ('css/main.css')}}">
+	
+	@yield('styles')
+	
 
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
@@ -212,16 +202,8 @@
 	<!-- end footer -->
 
 	<!-- JS -->}}
-	<script src="{{ asset ('js/jquery-3.5.1.min.js')}}"></script>
-	<script src="{{ asset ('js/bootstrap.bundle.min.js')}}"></script>
-	<script src="{{ asset ('js/owl.carousel.min.js')}}"></script>
-	<script src="{{ asset ('js/jquery.magnific-popup.min.js')}}"></script>
-	<script src="{{ asset ('js/smooth-scrollbar.js')}}"></script>
-	<script src="{{ asset ('js/select2.min.js')}}"></script>
-	<script src="{{ asset ('js/slider-radio.js')}}"></script>
-	<script src="{{ asset ('js/jquery.inputmask.min.js')}}"></script>
-	<script src="{{ asset ('js/plyr.min.js')}}"></script>
-	<script src="{{ asset ('js/main.js')}}"></script>
+	@yield('scripts')
+
 </body>
 
 </html>

@@ -9,6 +9,8 @@ class Album extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'idAlbum';
+
     protected $fillable = ['id_Artist','albumName','Bio','albumDate','albumPic'];
 
     public function Song()

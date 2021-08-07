@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Album;
 use App\Models\Artist;
+use DataTables;
+
 
 class AdminAlbums extends Controller
 {
@@ -13,17 +15,48 @@ class AdminAlbums extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $Albums = Album::all();
-        //$Artist = Artist::get()->where('$Albums->id_Artist','Artist->idArtist')->pluck('fullName');
-        //dd($Albums);
+        $Albums = Album::get();
+        
+        $Artists = Artist::all();
 
-        //dd($Albums);
+        if($request->ajax()){
+            $allData = DataTables::of($Albums)
+                        ->addIndexColumn()
+                        ->addColumn('Picture', function ($Albums) { 
+                            $url= asset('Images/'.$Albums->albumPic);
+                            return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" style="width:100%" />';
+                                })
+                        ->addColumn('Artist', function ($Albums) { 
+                            $Artist= Artist::where('idArtist',$Albums->id_Artist)->value('fullName');
+                            return $Artist;
+                                })
+                        ->addColumn('action',function($Albums){
+                            $btn = '<a href="javascript:void(0)"
+                                        data-toggle="tooltip" 
+                                        data-id="'.$Albums->idAlbum.'" 
+                                        data-original-title="Edit"  class="edit btn btn-outline-primary btn-sm ml-3 mt-3 editAlbum">
+                                        <i class="far fa-edit"></i>
+                                    </a>'  ;   
+                            $btn .= '<a href="javascript:void(0)"
+                                        data-toggle="tooltip" 
+                                        data-id="'.$Albums->idAlbum.'" 
+                                        data-original-title="Delete"  class="delete btn btn-outline-danger btn-sm ml-3 mt-3 deleteAlbum">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>'  ;   
 
-        return view('Admin.Admin_Album.index',[
-                'albums' => $Albums,
-                ]);
+                            return $btn;
+                        })
+                        
+                        ->rawColumns(['action','Picture','Artist'])
+                        ->make(true);
+
+                        return $allData;
+        }
+
+        return view('Admin.Admin_Album.index',compact('Albums','Artists'));
+
     }
 
     /**
@@ -34,9 +67,9 @@ class AdminAlbums extends Controller
     public function create()
     {
 
-        $Artists = Artist::all();
+      /*  $Artists = Artist::all();
         //dd($Artists);
-        return view('Admin.Admin_Album.create')->with('Artists',$Artists);
+        return view('Admin.Admin_Album.create')->with('Artists',$Artists);*/
     }
 
     /**
@@ -46,34 +79,45 @@ class AdminAlbums extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $Albums = new Album();
-        
-        
-        $ImageName = time() . '-' . $request->fullName . '-' . $request->albumPic->guessClientExtension();  
-
-        $request->albumPic->move(public_path('images'),$ImageName);
-
+    {      
         
         $request->validate([
             'id_Artist' => 'required',
-            'albumName' => ['required', 'string', 'max:255', 'unique:albums'],
+            'albumName' => ['required', 'string', 'max:255'],
             'Bio' => 'required | string | max:255',
             'albumDate' => 'required | date',
+            'albumPic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
 
-        $Albums = Album::create([
-            'id_Artist' => $request->input('id_Artist'),
-            'albumName' => $request->input('albumName'),
-            'Bio' => $request->input('Bio'),
-            'albumDate' => $request->input('albumDate'),
+        $image = $request->file('albumPic');
+
+
+        $ImageName = time() . '-' . $request->albumName . '-' . $image->guessClientExtension();  
+
+  
+        $destinationPath = public_path('/Images');
+
+        $image->move($destinationPath,$ImageName);
+
+
+
+        $Albums = Album::updateOrCreate(
+            [
+                'idAlbum' => $request->idAlbum
+            ],
+            [
+            'id_Artist' => $request->id_Artist,
+            'albumName' => $request->albumName,
+            'Bio' => $request->Bio,
+            'albumDate' => $request->albumDate,
 
             'albumPic' => $ImageName,
 
         ]);
         
-        return redirect('admin/Albums'); 
+        return response()->json(['success' => 'Album Added Successfully']);
+
 
     }
 
@@ -96,14 +140,9 @@ class AdminAlbums extends Controller
      */
     public function edit($idAlbum)
     {
-        $Artists = Artist::all();
-        $Album=Album::where('idAlbum',$idAlbum)->first();
-        //dd($Album);
-        return view('Admin.Admin_Album.edit')
-                ->with([
-                    'album' => $Album,
-                    'Artists' => $Artists,
-                ]); // Album as  $Album
+        $Album = Album::find($idAlbum);
+
+        return response()->json($Album);
     }
 
     /**
@@ -117,26 +156,6 @@ class AdminAlbums extends Controller
     public function update(Request $request, $idAlbum)
     {
 
-        //dd($request->input('id_Artist'));
-
-        $request->validate([
-            'id_Artist' => 'required',
-            'albumName' => ['required', 'string', 'max:255'],
-            'Bio' => 'required | string | max:255',
-            'albumDate' => 'required | date',
-        ]);
-
-        $Album=Album::where('idAlbum',$idAlbum)->update([
-            'id_Artist' => $request->input('id_Artist'),
-            'albumName' => $request->input('albumName'),
-            'Bio' => $request->input('Bio'),
-            'albumDate' => $request->input('albumDate'),
-
-            'albumtPic' => $request->file('albumtPic'),
-
-        ]);
-        
-        return redirect('admin/Albums'); 
     }
 
     /**
@@ -147,10 +166,8 @@ class AdminAlbums extends Controller
      */
     public function destroy($idAlbum)
     {
-        //dd($idAlbum);
-        $Album=Album::where('idAlbum',$idAlbum)->delete();
-        
+        $success = Album::find($idAlbum)->delete();
 
-        return redirect('admin/Albums');
+        return response()->json(['success'=> $success]);
     }
 }
