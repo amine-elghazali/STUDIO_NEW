@@ -1,4 +1,4 @@
-
+@extends('layouts.admin')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,28 +8,100 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>        
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- dropify -->
+    <link rel="stylesheet" type="text/css" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
 
 
 </head>
 
 
-
+    
 <body>
 
 
-            <div class=" pl-5 pr-5 m-auto pt-5 ">
-                <div class="container">
+    
 
-                    <h2> Artists </h2>
-                    <a href="javascript:void(0)" class="btn btn-success" id="CreateNewArtist">Add Artist <i class="far fa-plus-square"></i></a>
+<div class="m-2">
+    
+    @section('content')
+
+
+    <div class="modal fade animate__animated m-auto"  data-animation-in="animate__backInLeft" role="dialog" tabindex="-1" id="ajaxModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title border-bottom shadow-bottom-lg" id="modalHeading"></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="ArtistForm" class="ArtistForm"  method="POST">
+                            
+                        @csrf
+
+                        <input type="hidden" name="idArtist" id="idArtist"> <!-- we're using this input to know if the Artist id exist or not , so we can either updates or creates our data -->
+
+                        <div class="row">
+                            <div  class="form-group col-6">
+                                <label for="fullName">Full name : </label>
+                                    <input type="text" id="fullName" name="fullName" class="form-control mb-2" placeholder="Full Name" >
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label for="userName">User name : </label>
+                                    <input type="text" id="userName" name="userName" class="form-control mb-2" placeholder="User Name" >
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="artistName">Artist name : </label>
+                                    <input type="text" id="artistName" name="artistName" class="form-control mb-2" placeholder="Artist Name " >
+                            </div>
+                            
+                            <div class="form-group col-6">
+                                <label for="email">Artist Email : </label>
+                                    <input type="email" id="email" name="email" class="form-control mb-2" placeholder="exemple@gmail.com" >
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-6">
+                                <label for="Bio ">Artist Bio : </label>
+                                    <textarea name="Bio" id="Bio" cols="44" rows="5" class="mb-2"></textarea>
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label for="password">Artist password : </label>
+                                    <input type="password" id="password" name="password"  class="form-control mb-2" placeholder="********">
+                            </div>
+                        </div>
+
+                            <label for="artistPic">Artist picture : </label>
+                                <input type="file" name="artistPic" class="form-control mb-2 dropify" data-height="140" id="artistPic">
+
+                            <div class="pt-3">
+                                <button class="btn btn-outline-success btn-light shadow-lg" style="display: flex" id="saveBtn" value="create">Save <i class="fas fa-check m-1"></i></button>
+
+                                
+                            </div>
+
+                        </div>
+                    </form>
+                    <button class="btn btn-outline-light text-dark shadow-lg" id="cancelBtn" value="cancel">Exit<i class="far fa-times-circle ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+            <div>
+                <div class="container bg-light">
+
+                    <h2 class="m-auto border-bottom text-center pt-2 card-header"> Artists </h2>
+                    <a href="javascript:void(0)" class="btn btn-success shadow m-2" id="CreateNewArtist" data-toggle="modal" data-bs-target="#exampleModal">Add Artist <i class="far fa-plus-square"></i></a>
 
                     <div class="card-body">
-                            <table class="table table-bordered  data-table ">
+                            <table class="table table-striped  data-table ">
                                 <thead class="bg-light">
                                     <tr>
                                         
@@ -54,90 +126,54 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="ajaxModal" area-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title border-bottom shadow-bottom-lg" id="modalHeading"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" id="ArtistForm" class="ArtistForm"  method="POST">
-                                    
-                                @csrf
-
-                                <input type="hidden" name="idArtist" id="idArtist"> <!-- we're using this input to know if the Artist id exist or not , so we can either updates or creates our data -->
-
-                                <div class="row">
-                                    <div  class="form-group col-6">
-                                        <label for="fullName">Full name : </label>
-                                            <input type="text" id="fullName" name="fullName" class="form-control mb-2" placeholder="Full Name" >
-                                    </div>
-
-                                    <div class="form-group col-6">
-                                        <label for="userName">User name : </label>
-                                            <input type="text" id="userName" name="userName" class="form-control mb-2" placeholder="User Name" >
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="form-group col-6">
-                                        <label for="artistName">Artist name : </label>
-                                            <input type="text" id="artistName" name="artistName" class="form-control mb-2" placeholder="Artist Name " >
-                                    </div>
-                                    
-                                    <div class="form-group col-6">
-                                        <label for="email">Artist Email : </label>
-                                            <input type="email" id="email" name="email" class="form-control mb-2" placeholder="exemple@gmail.com" >
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-6">
-                                        <label for="Bio ">Artist Bio : </label>
-                                            <textarea name="Bio" id="Bio" cols="48" rows="5" class="mb-2"></textarea>
-                                    </div>
-
-                                    <div class="form-group col-6">
-                                        <label for="password">Artist password : </label>
-                                            <input type="password" id="password" name="password"  class="form-control mb-2" placeholder="********">
-                                    </div>
-                                </div>
-
-                                    <label for="artistPic">Artist picture : </label>
-                                        <input type="file" name="artistPic" class="form-control mb-2" id="artistPic">
-
-                                    <div class="pt-3">
-                                        <button class="btn btn-outline-success btn-light shadow-lg" style="display: flex" id="saveBtn" value="create">Save <i class="fas fa-check m-1"></i></button>
-
-                                        
-                                    </div>
-
-                                </div>
-                            </form>
-                            <button class="btn btn-outline-light text-dark shadow-lg" id="cancelBtn" value="cancel">Exit<i class="far fa-times-circle ml-2"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-            <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
+            
+            @endsection
+</div>
 
             
             
+
 </body>
+
+
 </html>
 
+
+@section('javascript')
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://jeremyfagis.github.io/dropify/dist/js/dropify.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
             <script type="text/javascript">
+
+
+
 
             $(document).ready(function(){
 
 
+
+                $('.dropify').dropify({
+                messages: {
+                    'default': 'Drag and drop a file here or click',
+                    'replace': 'Drag and drop or click to replace',
+                    'remove':  'Remove',
+                    'error':   'Ooops, something wrong happended.'
+                    }
+                });
+
                 $(function(){
+
+                    $("#ajaxModal").attr("aria-hidden", "true");
+                    $("#ajaxModal").modal('hide');
 
                         $.ajaxSetup({
                             headers:{
@@ -162,11 +198,20 @@
                         });
 
                         $("#cancelBtn").click(function(){
+                            
                             $('#ArtistForm').trigger("reset");
                             $('#ajaxModal').modal('hide');
+
+                              
                         });
 
                         $("#CreateNewArtist").click(function(){
+
+                            // Modal animation :
+                                                var ModalAnim = $('.modal');
+                                            
+                                                ModalAnim.addClass( ModalAnim.attr('data-animation-in') );
+
 
                             $('#ArtistId').val('');     // We set the Artist Id to '' ( Tha means we gonna create a data ;)  ) 
                             $('#ArtistForm').trigger("reset");  // To reset the Form  :)
@@ -211,13 +256,26 @@
                                 processData:false,
                                 data:formData,
                                 success : function(data){
+                                    Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Your work has been saved',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                    });
                                     $("#ajaxModal").modal("hide"); // Hiding  the ajax Modal 
                                     $("#ArtistForm").trigger("reset");
+                                  
                                     table.draw();   // refresh the table 
                                 },
                                 error : function(data){
-                                    console.log('Error:',data);
-                                    $("#saveBtn").html('Save');
+                                    Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: '<em> Validate the form ! </em>'
+                                    });
+                                    console.log('Error:',data)
                                 }
                             });
                         });
@@ -274,9 +332,17 @@
 
 
                         });
+
+                    
+
+                    
+
+                    
+
             });
                
 
                
             </script>
 
+@endsection

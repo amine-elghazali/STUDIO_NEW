@@ -40,13 +40,13 @@ class AdminSongs extends Controller
                             $btn = '<a href="javascript:void(0)"
                                         data-toggle="tooltip" 
                                         data-id="'.$Songs->idSong.'" 
-                                        data-original-title="Edit"  class="edit btn btn-outline-primary btn-sm ml-3 mt-3 editSong">
+                                        data-original-title="Edit"  data-mdb-ripple-color="dark" class="edit btn btn-outline-primary shadow btn-rounded editSong">
                                         <i class="far fa-edit"></i>
                                     </a>'  ;   
                             $btn .= '<a href="javascript:void(0)"
                                         data-toggle="tooltip" 
                                         data-id="'.$Songs->idSong.'" 
-                                        data-original-title="Delete"  class="delete btn btn-outline-danger btn-sm ml-3 mt-3 deleteSong">
+                                        data-original-title="Delete"  data-mdb-ripple-color="dark" class="delete btn btn-outline-danger shadow btn-rounded m-3 deleteSong">
                                         <i class="far fa-trash-alt"></i>
                                     </a>'  ;
 
@@ -56,7 +56,7 @@ class AdminSongs extends Controller
                             $btnDetails =  '<a href="javascript:void(0)"
                                             data-toggle="tooltip" 
                                             data-id="'.$Songs->idSong.'" 
-                                            data-original-title="Edit"  class="edit btn btn-outline-primary btn-sm ml-3 mt-3 detailSong">
+                                            data-original-title="Edit" data-mdb-ripple-color="dark" class="edit btn btn-outline-primary ml-3 mt-3 shadow detailSong">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                                         </a>'  ;   
                             return $btnDetails;
@@ -92,8 +92,8 @@ class AdminSongs extends Controller
 
 
         $request->validate([
-            'id_Album ' => 'required',
-            'id_Artist ' => 'required',
+            'id_Album' => 'required',
+            'id_Artist' => 'required',
             'name' => 'required | string | max:255',
             'Bio' => 'required | string | max:255',
             'songFile' => 'file|mimes:audio/mpeg,mpga,mp3,wav,aac' ,

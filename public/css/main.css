@@ -1119,10 +1119,10 @@ body::-webkit-scrollbar-thumb {
 	Main
 ==============================*/
 .main {
-  position: relative;
   margin-top: 70px;
   padding: 20px 0 60px;
 }
+
 .main__title {
   display: flex;
   flex-direction: row;
@@ -5765,8 +5765,9 @@ body::-webkit-scrollbar-thumb {
 /*==============================
 	Modal
 ==============================*/
+/*
 .modal {
-  position: relative;
+  position: fixed;
   display: block;
   background-color: #16151a;
   margin: 40px auto;
@@ -5858,6 +5859,8 @@ body::-webkit-scrollbar-thumb {
     right: 35px;
   }
 }
+
+*/
 .mfp-bg {
   background: rgba(34,34,39,0.75);
 }

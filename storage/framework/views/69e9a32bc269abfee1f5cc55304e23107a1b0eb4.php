@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,30 +8,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>        
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- dropify -->
+    <link rel="stylesheet" type="text/css" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
 
 
 </head>
 
 
-
+    
 <body>
 
+<div class="container m-2">
+    <?php $__env->startSection('content'); ?>
 
-            <div class=" pl-5 pr-5 m-auto pt-5 ">
-                <div class="container">
+            <div>
+                <div class="container bg-light">
 
-                    <h2> Songs </h2>
-                    <a href="javascript:void(0)" class="btn btn-success" id="CreateNewSong">Add song <i class="far fa-plus-square"></i></a>
+                    <h2 class="m-auto border-bottom text-center pt-2 card-header"> Songs </h2>
+                    <a href="javascript:void(0)" class="btn btn-success shadow m-2" id="CreateNewSong">Add song <i class="far fa-plus-square"></i></a>
 
                     <div class="card-body">
-                            <table class="table table-bordered  data-table ">
+                            <table class="table table-striped  data-table ">
                                 <thead class="bg-light">
                                     <tr>
                                         <th> No </th>
@@ -54,7 +53,7 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="ajaxModal" area-hidden="true">
+            <div class="modal fade animate__animated"  data-animation-in="animate__backInLeft" role="dialog" tabindex="-1" id="ajaxModal" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -71,7 +70,7 @@
                                         <div class="form-group col-6">
                                             <label for="id_Artist">Artist : </label>
                                             
-                                            <select class="form-control" id="id_Artist" name="id_Artist">
+                                            <select class="form-select m-1" id="id_Artist" name="id_Artist">
                                                 <option value="" selected> Select an artist</option>
                                                 <?php $__currentLoopData = $Artists; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $Artist): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     
@@ -84,7 +83,7 @@
                                         <div class="form-group col-6">
                                             <label for="id_Album">Album : </label>
                                             
-                                            <select class="form-control" id="id_Album" name="id_Album">
+                                            <select class="form-select m-1" id="id_Album" name="id_Album">
                                                 <option value="" selected> Select an Album</option>
                                                 <?php $__currentLoopData = $Albums; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $Album): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     
@@ -97,40 +96,35 @@
                                     </div>
 
                                         
-                                    <div class="row">
+                                    <div class="row row-cols-2">
 
-                                        <div class="form-group col-6">
+                                        <div class="form-group ">
                                             <label for="name">Song name : </label>
-                                                <input type="text" id="name" name="name" class="form-control mb-2">
+                                                <input type="text" id="name" name="name" class="form-control m-1">
+
+                                            <label for="songDate">Song date : </label>
+                                                <input type="date" id="songDate" name="songDate" class="form-control m-1" >
+
                                         </div>
 
-                                        <div class="form-group col-md-6 col-6">
+                                        <div class="form-group col-md-6 ">
                                             <label for="Bio ">Song Bio : </label>
-                                                <textarea name="Bio" id="Bio" cols="48" rows="5" class="mb-2"></textarea>
+                                                <textarea name="Bio" id="Bio" cols="44" rows="5" class="m-1"></textarea>
                                         </div>
 
                                     </div>
                                     
-
-                                    <div class="row">
-
-                                        <div class="form-group col-12">
-                                            <label for="songDate">Song date : </label>
-                                                <input type="date" id="songDate" name="songDate" class="form-control" >
-                                        </div>
-
-                                    </div>
 
                                     <div class="row">
 
                                         <div class="form-group col-6">
                                             <label for="songFile">Song Audio : </label>
-                                                <input type="file" name="songFile" class="form-control mb-2" id="songFile">
+                                                <input type="file" name="songFile" class="dropify form-control m-1" id="songFile">
                                         </div>
                                     
                                         <div class="form-group col-6">
                                             <label for="songPic">Song Picture : </label>
-                                                <input type="file" name="songPic" class="form-control mb-2" id="songPic">
+                                                <input type="file" name="songPic" class="dropify form-control m-1" id="songPic">
                                         </div>
 
                                     </div>
@@ -148,43 +142,60 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="songDetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade animate__animated" id="songDetailsModal"  data-animation-in="animate__fadeInTopLeft" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog  modal-lg modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Song Details</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button type="button" id="colseDetailModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                       <B>Path :</B><div id="path"></div>
                       <B>Extension :</B><div id="extension"></div>
                       <B>Release date :</B><div id="songDateDetail"></div>
-                      <B>Size :</B><div id="size"></div>ko
+                      <B>Size ( <em>Ko</em>  ) :</B><div id="size"></div> 
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" id="colseDetailModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+
                   </div>
                 </div>
               </div>
 
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-            <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-        
-
+        <?php $__env->stopSection(); ?>
            
             
 </body>
 </html>
 
+
+
+<?php $__env->startSection('javascript'); ?>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://jeremyfagis.github.io/dropify/dist/js/dropify.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
             <script type="text/javascript">
 
             $(document).ready(function(){
 
+
+                $('.dropify').dropify({
+                        messages: {
+                            'default': 'Drag and drop a file here or click',
+                            'replace': 'Drag and drop or click to replace',
+                            'remove':  'Remove',
+                            'error':   'Ooops, something wrong happended.'
+                            }
+                        });
 
                 $(function(){
 
@@ -217,6 +228,11 @@
                         });
 
                         $("#CreateNewSong").click(function(){
+
+                            // Modal animation :
+                            var ModalAnim = $('#ajaxModal');
+                                            
+                                            ModalAnim.addClass( ModalAnim.attr('data-animation-in') );
 
                             $('#idSong').val('');     // We set the Song Id to '' ( Tha means we gonna create a data ;)  ) 
                             $('#SongForm').trigger("reset");  // To reset the Form  :)
@@ -260,13 +276,26 @@
                                 processData:false,
                                 data:formData,
                                 success : function(data){
+                                    Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Your work has been saved',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                    });
                                     $("#ajaxModal").modal("hide"); // Hiding  the ajax Modal 
-                                    $("#AlbumForm").trigger("reset");
+                                    $("#SongForm").trigger("reset");
+
                                     table.draw();   // refresh the table 
                                 },
                                 error : function(data){
+                                    Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: '<em> Validate the form ! </em>'
+                                    });
                                     console.log('Error:',data);
-                                    $("#saveBtn").html('Save');
                                 }
                             });
                         });
@@ -309,9 +338,11 @@
                                     $("#modalHeading").html("Edit song");
                                     $("#ajaxModal").modal("show");
                                     
-                                    $("#idAlbum").val(data.idAlbum);
-                                    $("#id_Artist option:selected").val(data.id_Artist);
+                                    $("#idSong").val(data.idAlbum);
+                                    $("#id_Album").val(data.id_Album);
                                     $("#id_Album option:selected").val(data.id_Album);
+                                    $("#id_Artist").val(data.id_Artist);
+                                    $("#id_Artist option:selected").val(data.id_Artist);
                                     $('#name').val(data.name);
                                     $('#Bio').val(data.Bio);
                                     $('#songDate').val(data.songDate);
@@ -326,6 +357,12 @@
 
 
                         $('body').on('mouseover','.detailSong',function(){
+
+                             // Modal animation :
+                             var ModalAnim = $('#songDetailsModal');
+                                            
+                                            ModalAnim.addClass( ModalAnim.attr('data-animation-in') );
+
                                 var id_songDetails = $(this).data("id");
                                 
                                 console.log(id_songDetails);
@@ -359,4 +396,6 @@
                
             </script>
 
-<?php /**PATH C:\Users\dell\Desktop\proj\STUDIO_NEW\resources\views/Admin/Admin_Song/index.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dell\Desktop\proj\STUDIO_NEW\resources\views/Admin/Admin_Song/index.blade.php ENDPATH**/ ?>

@@ -5,13 +5,18 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<link  rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
 
 	<!-- CSS -->
-	
-	@yield('styles')
-	
+	<link rel="stylesheet" href="{{asset ('css/main.css')}}">
 
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
@@ -175,8 +180,9 @@
 
 	<!-- main content -->
 	<main class="main">
-
-		@yield('content')
+		<div class="mainContent">
+			@yield('content')
+		</div>
 
 	</main>
 	<!-- end main content -->
@@ -202,8 +208,10 @@
 	<!-- end footer -->
 
 	<!-- JS -->}}
-	@yield('scripts')
-
+	<script src="{{ asset ('js/smooth-scrollbar.js')}}"></script>
+	<script src="{{ asset ('js/slider-radio.js')}}"></script>
+	
+	@yield('javascript')
 </body>
 
 </html>

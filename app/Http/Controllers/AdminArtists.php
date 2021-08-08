@@ -32,13 +32,13 @@ class AdminArtists extends Controller
                             $btn = '<a href="javascript:void(0)"
                                         data-toggle="tooltip" 
                                         data-id="'.$Artists->idArtist.'" 
-                                        data-original-title="Edit"  class="edit btn btn btn-outline-primary btn-sm ml-3 mt-3 editArtist">
+                                        data-original-title="Edit" data-mdb-ripple-color="dark"  class="edit btn btn-outline-primary shadow btn-rounded editArtist">
                                        <i class="far fa-edit"></i>
                                     </a>'  ;   
                             $btn .= '<a href="javascript:void(0)"
                                 data-toggle="tooltip" 
                                 data-id="'.$Artists->idArtist.'" 
-                                data-original-title="Delete"  class="delete btn btn-outline-danger btn-sm ml-3 mt-3 btn-light deleteArtist">
+                                data-original-title="Delete" data-mdb-ripple-color="dark"  class="delete btn btn-outline-danger shadow btn-rounded m-3 deleteArtist">
                                 <i class="far fa-trash-alt"></i>
                             </a>'  ;   
 
