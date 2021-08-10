@@ -34,12 +34,12 @@
 		<div class="header__content">
 			<div class="header__logo">
 				<a href="index.html">
-					<img src="img/logo.svg" alt="">
+					<img src="#" alt="">
 				</a>
 			</div>
 
 			<nav class="header__nav">
-				<a href="profile.html">Profile</a>
+				<a href="/admin/Profile">Profile</a>
 				<a href="about.html">About</a>
 			</nav>
 
@@ -166,7 +166,7 @@
 	<!-- player -->
 	<div class="player">
 		<div class="player__cover">
-			<img src="img/covers/cover.svg" alt="">
+			<img src="#" alt="">
 		</div>
 
 		<!-- class="player__content">
@@ -208,10 +208,11 @@
 	<!-- end footer -->
 
 	<!-- JS -->}}
+	@yield('javascript')
+
 	<script src="{{ asset ('js/smooth-scrollbar.js')}}"></script>
 	<script src="{{ asset ('js/slider-radio.js')}}"></script>
 	
-	@yield('javascript')
 </body>
 
 </html>

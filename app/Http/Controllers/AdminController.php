@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Auth;
 
 class   AdminController extends Controller
 {
@@ -12,7 +14,12 @@ class   AdminController extends Controller
     }
 
     public function profile(){
-        return view('dashboard.admin.profile');
+
+        $user = User::find(auth::user()->idUser);
+
+        return response()->json([
+            'user' => $user,
+        ]);    
     }
 
     public function settings(){

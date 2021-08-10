@@ -30,16 +30,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group([ 'prefix' => 'admin', 'middleware' => ['isAdmin','auth','PreventBackHistory']],function(){
 
-    Route::get('/dashboard' ,[App\Http\Controllers\AdminController::class,'index'])->name('admin.dashboard');
-    Route::get('/profile' ,[App\Http\Controllers\AdminController::class,'profile'])->name('admin.profile');
+    Route::get('dashboard' ,[App\Http\Controllers\AdminController::class,'index'])->name('admin.dashboard');
+    //Route::get('/Profile' ,[App\Http\Controllers\AdminController::class,'profile'])->name('admin.profile');
     Route::get('/settings' ,[App\Http\Controllers\AdminController::class,'settings'])->name('admin.settings');
 
+   
 
         Route::resource('/Artists',App\Http\Controllers\AdminArtists::class);
         Route::resource('/Albums', App\Http\Controllers\AdminAlbums::class);
         Route::resource('/Songs', App\Http\Controllers\AdminSongs::class);
-        Route::get('/Songs/{idSong}/details',[App\Controllers\AdminSongs::class,'getOneSong']);
-
+        Route::get('/Songs/{idSong}/details',[App\Http\Controllers\AdminSongs::class,'getOneSong']);
+        Route::resource('/Profile',App\Http\Controllers\AdminProfile::class);
 });
 
 

@@ -11,6 +11,7 @@
    
     <!-- dropify -->
     <link rel="stylesheet" type="text/css" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
+    <link rel="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.bootstrap4.min.css" />
 
 
 </head>
@@ -28,8 +29,8 @@
                     <h2 class="m-auto border-bottom text-center pt-2 card-header"> Albums </h2>
                     <a href="javascript:void(0)" class="btn btn-success shadow m-2" id="CreateNewAlbum">Add album <i class="far fa-plus-square"></i></a>
 
-                    <div class="card-body">
-                            <table class="table table-striped  data-table">
+                    <div class="card-body table-responsive">
+                            <table class="table table-striped table-bordered table-hover data-table">
                                 <thead class="bg-light">
                                     <tr>
                                         <th> No </th>
@@ -42,7 +43,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody class="tdyat">
                                   
                                 </tbody>
                             </table>
@@ -140,19 +141,19 @@
             $(document).ready(function(){
 
 
-               
-
-                $(function(){
-
-
-                    $('.dropify').dropify({
+                $('.dropify').dropify({
                         messages: {
                             'default': 'Drag and drop a file here or click',
                             'replace': 'Drag and drop or click to replace',
                             'remove':  'Remove',
                             'error':   'Ooops, something wrong happended.'
                             }
-                        });
+                        }); 
+
+                $(function(){
+
+
+                    
 
                         $.ajaxSetup({
                             headers:{
@@ -173,6 +174,8 @@
                                 { data : 'albumDate',name :'albumDate',orderable: false, searchable: false },
                                 { data : 'action',name : 'action',orderable: false, searchable: false}
                             ],
+                            pageLength: 3,
+                            "lengthMenu": [ 3,6,9,12,15]
                         });
 
                         $("#cancelBtn").click(function(){
@@ -196,7 +199,6 @@
                       
                         $("#saveBtn").click(function(e){
                             e.preventDefault();
-                            $(this).html('Save');
 
                             var idAlbum = $('#idAlbum').val();
                             var id_Artist = $("#id_Artist option:selected").val();
@@ -231,10 +233,9 @@
                                     title: 'Your work has been saved',
                                     showConfirmButton: false,
                                     timer: 1500
-                                    }),
+                                    });
                                     $("#ajaxModal").modal("hide"); // Hiding  the ajax Modal 
                                     $("#AlbumForm").trigger("reset");
-                                    $("#dropify").val('');
 
                                     table.draw();   // refresh the table 
                                 },
@@ -268,7 +269,6 @@
                                         },
                                         error : function(data){
                                             console.log('Error:',data);
-                                            $("#saveBtn").html('Save');
                                         }
                                     })
                                 }

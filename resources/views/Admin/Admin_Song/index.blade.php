@@ -11,11 +11,17 @@
    
     <!-- dropify -->
     <link rel="stylesheet" type="text/css" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
+    <link rel="stylesheet" type="text/css" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
 
 
 </head>
 
-
+<style>
+    .data-table.dataTables_filter {
+  float: right;
+  text-align: right;
+}
+</style>
     
 <body>
 
@@ -28,8 +34,8 @@
                     <h2 class="m-auto border-bottom text-center pt-2 card-header"> Songs </h2>
                     <a href="javascript:void(0)" class="btn btn-success shadow m-2" id="CreateNewSong">Add song <i class="far fa-plus-square"></i></a>
 
-                    <div class="card-body">
-                            <table class="table table-striped  data-table ">
+                    <div class="card-body table-responsive">
+                            <table class="table table-striped table-bordered data-table ">
                                 <thead class="bg-light">
                                     <tr>
                                         <th> No </th>
@@ -44,7 +50,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody class="tdyat">
                                   
                                 </tbody>
                             </table>
@@ -211,7 +217,7 @@
                             ajax:"{{route('Songs.index')}}",
                             columns: [
                                 { data : 'DT_RowIndex',name :'DT_RowIndex' },
-                                { data:  'Picture',name :'Picture',orderable: false, searchable: false},
+                                { data :  'Picture',name :'Picture',orderable: false, searchable: false},
                                 { data : 'Artist',name :'Artist', searchable: false },
                                 { data : 'Album',name :'Album', searchable: false },
                                 { data : 'name',name :'name',orderable: true},
@@ -220,6 +226,8 @@
                                 { data : 'action',name : 'action',orderable: false, searchable: false},
                                 { data : 'details',name:'details'}
                             ],
+                            pageLength: 3,
+                            "lengthMenu": [ 3,6,9,12,15]
                         });
                         
                         $("#cancelBtn").click(function(){
@@ -243,7 +251,6 @@
                       
                         $("#saveBtn").click(function(e){
                             e.preventDefault();
-                            $(this).html('Save');
 
                             var idSong = $('#idSong').val();
                             var id_Artist = $("#id_Artist option:selected").val();
@@ -288,7 +295,7 @@
 
                                     table.draw();   // refresh the table 
                                 },
-                                error : function(data){
+                              error : function(data){
                                     Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
@@ -300,7 +307,6 @@
                             });
                         });
 
-                            
                             $('body').on('click','.deleteSong',function(){
                                 var id_ToDelete = $(this).data("id");
                                 
@@ -371,7 +377,8 @@
                                     
                                     console.log(data.songDate);
 
-                                    $("#modalHeading").html("Edit song");
+                                    
+
                                     $("#songDetailsModal").modal("show");
 
 

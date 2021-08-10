@@ -227,13 +227,30 @@ body::-webkit-scrollbar-thumb {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+/*
 .table-responsive {
   display: block;
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
+}*/
+
+.odd{
+  padding-top: 10px;
 }
+
+.dataTables_filter,label{
+    float: left;
+    margin-bottom: 10px;
+}
+
+.dataTables_filter,select{
+    float: right;
+}
+
+
 .owl-carousel .owl-item {
   -webkit-transform: none;
 }
@@ -5861,6 +5878,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 */
+
 .mfp-bg {
   background: rgba(34,34,39,0.75);
 }

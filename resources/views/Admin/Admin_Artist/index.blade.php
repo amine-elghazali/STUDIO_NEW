@@ -100,8 +100,8 @@
                     <h2 class="m-auto border-bottom text-center pt-2 card-header"> Artists </h2>
                     <a href="javascript:void(0)" class="btn btn-success shadow m-2" id="CreateNewArtist" data-toggle="modal" data-bs-target="#exampleModal">Add Artist <i class="far fa-plus-square"></i></a>
 
-                    <div class="card-body">
-                            <table class="table table-striped  data-table ">
+                    <div class="card-body table-responsive">
+                            <table class="table table-striped table-bordered table-hover data-table ">
                                 <thead class="bg-light">
                                     <tr>
                                         
@@ -126,7 +126,6 @@
                 </div>
             </div>
 
-            
             @endsection
 </div>
 
@@ -150,6 +149,7 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
             <script type="text/javascript">
@@ -172,8 +172,7 @@
 
                 $(function(){
 
-                    $("#ajaxModal").attr("aria-hidden", "true");
-                    $("#ajaxModal").modal('hide');
+                    
 
                         $.ajaxSetup({
                             headers:{
@@ -195,6 +194,9 @@
                                 { data : 'Bio',name :'Bio',orderable: false, searchable: false },
                                 { data : 'action',name : 'action',orderable: false, searchable: false}
                             ],
+                            pageLength: 3,
+                            "lengthMenu": [ 3,6,9,12,15]
+
                         });
 
                         $("#cancelBtn").click(function(){
@@ -223,7 +225,6 @@
                         $("#saveBtn").click(function(e){
 
                             e.preventDefault();
-                            $(this).html('Save');
 
                             var idArtist = $('#idArtist').val();
                             var fullName = $('#fullName').val();
@@ -265,7 +266,7 @@
                                     });
                                     $("#ajaxModal").modal("hide"); // Hiding  the ajax Modal 
                                     $("#ArtistForm").trigger("reset");
-                                  
+                                    $(".dropify-clear").click();
                                     table.draw();   // refresh the table 
                                 },
                                 error : function(data){
@@ -275,8 +276,8 @@
                                     text: 'Something went wrong!',
                                     footer: '<em> Validate the form ! </em>'
                                     });
-                                    console.log('Error:',data)
-                                }
+                                    console.log('Error:',data);
+                                },
                             });
                         });
 
@@ -307,6 +308,8 @@
 
 
                             $('body').on('click','.editArtist',function(){
+                                $(".dropify-clear").click();
+
                                 var id_ToEdit = $(this).data("id");
 
                                 console.log(id_ToEdit);
@@ -324,7 +327,7 @@
                                     $('#artistName').val(data.artistName);
                                     $('#email').val(data.email);
                                     $('#Bio').val(data.Bio);
-                                    $('#password').val(data.password);
+                                    $("#artistPic").val(data.artistPic);
                                 });
 
 
@@ -333,11 +336,6 @@
 
                         });
 
-                    
-
-                    
-
-                    
 
             });
                
